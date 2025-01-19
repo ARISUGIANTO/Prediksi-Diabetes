@@ -34,7 +34,7 @@ else:
         hypertension = st.sidebar.selectbox(' Darah Tinggi (Hypertension) (1: Iya, 0: Tidak)', (1, 0))
         heart_disease = st.sidebar.selectbox('Penyakit Jantung (1: Iya, 0: No)', (1, 0))
         smoking_history = st.sidebar.selectbox('Riwayat Merokok (0: Tidak Pernah, 1: Pernah Merokok, 2: Masih Merokok)', (0, 1, 2))
-        bmi = st.sidebar.slider('Body Mass Index (Berat Badan (kg) / (Tinggi Badan (m)) x 2)', 10.0, 70.0, 10.0)
+        bmi = st.sidebar.slider('Body Mass Index (Berat Badan (kg) / (Tinggi Badan (m)) x 2)', 10.0, 100.0, 10.0)
         HbA1c_level = st.sidebar.slider('HbA1c Level (rata-rata kadar gula darah Anda dalam dua hingga tiga bulan terakhir)', 0.0, 20.0, 0.0)
         blood_glucose_level = st.sidebar.slider('Tingkat Glukosa Darah', 0.0, 300.0, 0.0)
         data = {
