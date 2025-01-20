@@ -9,16 +9,32 @@ import os
 import matplotlib.pyplot as plt
 # Set page configuration
 st.set_page_config(
-    page_title="Aplikasi Prediksi Diabetes",
+    page_title="Prediksi Diabetes",
     page_icon="🩺",
-    initial_sidebar_state="expanded"  # Mulai dengan sidebar terbuka
+    initial_sidebar_state="expanded"  
 )
+st.markdown("""
+    <style>
+    div.stButton > button {
+        background-color: #26628f;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+       
+    }
+    div.stButton > button:hover {
+        background-color: #dbedfa;
+        color: #26628f;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 
 st.write("""
 # APLIKASI PREDIKSI DIABETES
 Aplikasi ini digunakan untuk memprediksi apakah seseorang memiliki penyakit diabetes atau tidak.""")
 
-img = Image.open("gambar.png")
+img = Image.open("Diabetes.jpg")
 st.image(img, width=600)
 
 st.sidebar.header('Masukkan Parameter Pasien')
@@ -34,8 +50,14 @@ else:
         hypertension = st.sidebar.selectbox(' Darah Tinggi (Hypertension) (1: Iya, 0: Tidak)', (1, 0))
         heart_disease = st.sidebar.selectbox('Penyakit Jantung (1: Iya, 0: No)', (1, 0))
         smoking_history = st.sidebar.selectbox('Riwayat Merokok (0: Tidak Pernah, 1: Pernah Merokok, 2: Masih Merokok)', (0, 1, 2))
-        bmi = st.sidebar.slider('Body Mass Index (Berat Badan (kg) / (Tinggi Badan (m)) x 2)', 10.0, 100.0, 10.0)
-        HbA1c_level = st.sidebar.slider('HbA1c Level (rata-rata kadar gula darah Anda dalam dua hingga tiga bulan terakhir)', 0.0, 20.0, 0.0)
+        # Input berat badan dan tinggi badan
+        weight = st.sidebar.number_input("Berat Badan (kg)", min_value=1.0, max_value=200.0, value=50.0, step=0.1)
+        height = st.sidebar.number_input("Tinggi Badan (cm)", min_value=50.0, max_value=250.0, value=160.0, step=0.1)
+        # Konversi tinggi badan dari cm ke meter dan hitung BMI
+        height_m = height / 100
+        bmi_calculated = round(weight / (height_m ** 2), 2)
+        bmi = st.sidebar.slider('Body Mass Index (BMI)', 10.0, 100.0, bmi_calculated)
+        HbA1c_level = st.sidebar.slider('HbA1c Level (Rata-rata kadar gula darah Anda dalam dua hingga tiga bulan terakhir)', 0.0, 20.0, 0.0)
         blood_glucose_level = st.sidebar.slider('Tingkat Glukosa Darah', 0.0, 300.0, 0.0)
         data = {
             'gender': gender,
@@ -56,6 +78,10 @@ diabetes_raw = pd.read_csv('diabetes.csv')
 diabetes = diabetes_raw.drop(columns=['diabetes'])
 df = pd.concat([input_df,diabetes],axis=0)
 df = df[:1]
+
+# Fungsi untuk menampilkan gambar dengan keterangan
+def show_image(image_path, caption):
+    st.image(image_path, caption=caption, use_container_width=True)
 
 #menampilkan parameter hasil inputan
 if uploaded_file is not None:
@@ -100,8 +126,10 @@ if st.button("Mulai prediksi"):
 
         if prediksi_int == 1:
             st.write("Pasien memiliki kemungkinan diabetes, segera konsultasikan ke dokter.")
+            show_image("kemenkes.png", "Langkah pertama setelah terdiagnosis diabetes")
         else:
             st.write("Pasien tidak memiliki diabetes, tetap jaga pola hidup sehat.")
+            show_image("cerdik.png", "CERDIK: Cara hidup sehat terhindar dari diabetes")
     else:
         st.write("Model yang diunggah tidak valid. Pastikan model adalah RandomForestClassifier.")
 
