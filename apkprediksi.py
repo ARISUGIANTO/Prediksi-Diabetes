@@ -88,7 +88,7 @@ if st.button("Mulai prediksi"):
         #create pie chart
         labels = ['Tidak Diabetes', 'Diabetes']
         sizes = prediksi_proba[0]
-        colors = ['#ff9999','#66b3ff']
+        colors = ['#C62300','#B771E5']
         explode = (0.1, 0)
 
         fig1, ax1 = plt.subplots()
